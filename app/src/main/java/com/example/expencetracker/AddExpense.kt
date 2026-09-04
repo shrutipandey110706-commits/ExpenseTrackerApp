@@ -2,23 +2,36 @@ package com.example.expencetracker
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,9 +75,10 @@ fun AddExpene() {
                     }
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.),
+                    painter = painterResource(id = R.drawable.baseline_chevron_left_24),
                     contentDescription = null,
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                    colorFilter = ColorFilter.tint(Color.White),
+                    modifier = Modifier.align(Alignment.CenterStart)
                 )
 
                 Text(
@@ -97,6 +111,22 @@ fun AddExpene() {
 fun DataForm(
     modifier: Modifier
 ) {
+    val name = remember {
+        mutableStateOf("")
+    }
+
+    val amount = remember {
+        mutableStateOf("")
+    }
+
+    val date = remember {
+        mutableStateOf(0L)
+    }
+
+    val dateDialogVisibility = remember {
+        mutableStateOf(false)
+    }
+
     Column(
         modifier = modifier
             .padding(16.dp)
@@ -105,65 +135,83 @@ fun DataForm(
             .clip(RoundedCornerShape(17.dp))
             .background(Color.White)
             .padding(16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
 
         Text(
             text = "Name",
             fontSize = 14.sp,
-            color=Color.Gray
+            color = Color.Black
         )
+
+        Spacer(modifier = Modifier.size(8.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(
-            modifier = Modifier.padding(4.dp)
+            value = name.value,
+            onValueChange = {
+                name.value = it
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedBorderColor = Color.Gray,
+                unfocusedBorderColor = Color.Gray
+            )
         )
 
         Text(
             text = "Amount",
-            fontSize = 14.sp ,
-            color=Color.Gray
+            fontSize = 14.sp,
+            color = Color.Black
         )
-        Spacer(
-            modifier = Modifier.padding(4.dp)
-        )
+
+        Spacer(modifier = Modifier.size(8.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(
-            modifier = Modifier.padding(4.dp)
+            value = amount.value,
+            onValueChange = {
+                amount.value = it
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedBorderColor = Color.Gray,
+                unfocusedBorderColor = Color.Gray
+            )
         )
 
         Text(
             text = "Date",
             fontSize = 14.sp,
-            color=Color.Gray
-        )
-        Spacer(
-            modifier = Modifier.padding(4.dp)
+            color = Color.Black
         )
 
-        OutlinedTextField(
-            value = "",
-            onValueChange = {},
-            modifier = Modifier.fillMaxWidth()
-        )
+        Spacer(modifier = Modifier.size(8.dp))
 
-        Spacer(
-            modifier = Modifier.padding(8.dp)
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    dateDialogVisibility.value = true
+                }
+        ) {
+            OutlinedTextField(
+                value = date.value.toString(),
+                onValueChange = {},
+                modifier = Modifier.fillMaxWidth(),
+                enabled = false,
+                colors = OutlinedTextFieldDefaults.colors(
+                    disabledTextColor = Color.Black,
+                    disabledBorderColor = Color.Gray
+                )
+            )
+        }
 
         Button(
             onClick = {},
-            modifier=Modifier
+            modifier = Modifier
                 .clip(RoundedCornerShape(2.dp))
                 .fillMaxWidth()
         ) {
@@ -173,6 +221,61 @@ fun DataForm(
                 color = Color.White
             )
         }
+    }
+
+    if (dateDialogVisibility.value) {
+        ExpenseDatePickerDialog(
+            onDateSelected = {
+                date.value = it
+                dateDialogVisibility.value = false
+            },
+            onDismiss = {
+                dateDialogVisibility.value = false
+            }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ExpenseDatePickerDialog(
+    onDateSelected: (date: Long) -> Unit,
+    onDismiss: () -> Unit
+) {
+    val datePickerState = rememberDatePickerState()
+
+    val selectDate = datePickerState.selectedDateMillis ?: 0L
+
+    DatePickerDialog(
+        onDismissRequest = {
+            onDismiss()
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onDateSelected(selectDate)
+                }
+            ) {
+                Text(
+                    text = "Confirm"
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Text(
+                    text = "Cancel"
+                )
+            }
+        }
+    ) {
+        DatePicker(
+            state = datePickerState
+        )
     }
 }
 
