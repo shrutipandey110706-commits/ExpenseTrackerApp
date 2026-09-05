@@ -71,9 +71,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    implementation(libs.constraintlayout)
-
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation(libs.constraint.compose)
 
     implementation(libs.firebase.database.ktx)
 
@@ -95,18 +93,14 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.dagger.hilt.compose)
 
-    implementation("androidx.compose.foundation:foundation:1.7.0-beta07")
-
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
 
-    val nav_version = "2.7.7"
-
-    implementation("androidx.navigation:navigation-compose:$nav_version")
-
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    val nav_version="2.7.7"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 }

@@ -2,6 +2,7 @@ package com.example.expencetracker
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -30,13 +32,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.expencetracker.data.madel.ExpenseEntity
 import com.example.expencetracker.ui.theme.Zinc
 import com.example.expencetracker.viewmodel.HomeViewModel
 import com.example.expencetracker.viewmodel.homeclassModelFactory
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     val viewModel: HomeViewModel =
         homeclassModelFactory(LocalContext.current).create(HomeViewModel::class.java)
 
@@ -46,7 +50,7 @@ fun HomeScreen() {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
         ) {
-            val (nameRow, list, card, topBar) = createRefs()
+            val (nameRow, list, card, topBar,add) = createRefs()
 
             Image(
                 painter = painterResource(id = R.drawable.ic_topbar),
@@ -121,6 +125,22 @@ fun HomeScreen() {
                         height = Dimension.fillToConstraints
                     },
                 list = state.value,viewModel
+            )
+
+            Image(
+                painter = painterResource(R.drawable.ic_add),
+                contentDescription = null,
+                modifier = Modifier
+                    .constrainAs(add) {
+                        bottom.linkTo(parent.bottom)
+                        end.linkTo(parent.end)
+                    }
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .clickable{
+                        navController.navigate("/add")
+                    }
+
             )
         }
     }
@@ -345,5 +365,5 @@ fun TrasectionItem(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(rememberNavController())
 }
