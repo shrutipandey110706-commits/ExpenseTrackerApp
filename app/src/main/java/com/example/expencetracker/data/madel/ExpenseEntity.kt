@@ -1,6 +1,7 @@
 package com.example.expencetracker.data.madel
 
 import androidx.room.Entity
+
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "Expense_Table")
