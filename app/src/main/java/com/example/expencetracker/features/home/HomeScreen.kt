@@ -1,4 +1,4 @@
-package com.example.expencetracker
+package com.example.expencetracker.features.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,6 +34,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.expencetracker.R
 import com.example.expencetracker.data.madel.ExpenseEntity
 import com.example.expencetracker.ui.theme.Zinc
 import com.example.expencetracker.viewmodel.HomeViewModel
@@ -132,15 +133,14 @@ fun HomeScreen(navController: NavController) {
                 contentDescription = null,
                 modifier = Modifier
                     .constrainAs(add) {
-                        bottom.linkTo(parent.bottom)
-                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom, margin = 20.dp)
+                        end.linkTo(parent.end, margin = 20.dp)
                     }
                     .size(48.dp)
                     .clip(CircleShape)
-                    .clickable{
+                    .clickable {
                         navController.navigate("/add")
                     }
-
             )
         }
     }
@@ -237,7 +237,7 @@ fun TransectionList(modifier: Modifier, list: List<ExpenseEntity>,viewModel: Hom
                 amount = item.amount.toString(),
                 icon = viewModel.getItemIcon(item),
                 date = item.date.toString(),
-                color = if (item.type == "income") Color.Green else Color.Red
+                color = if (item.type == "Income") Color.Green else Color.Red
             )
         }
 

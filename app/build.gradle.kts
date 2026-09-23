@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.constraint.compose)
+    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
 
     implementation(libs.firebase.database.ktx)
 

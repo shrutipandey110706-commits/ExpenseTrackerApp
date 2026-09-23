@@ -1,4 +1,4 @@
-package com.example.expencetracker
+package com.example.expencetracker.features.add_expense
 
 
 import androidx.compose.foundation.Image
@@ -47,6 +47,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.expencetracker.R
+import com.example.expencetracker.Utils
 import com.example.expencetracker.data.madel.ExpenseEntity
 import com.example.expencetracker.viewmodel.AddExoenseViewModelFactor
 import com.example.expencetracker.viewmodel.AddExpanseViewModel

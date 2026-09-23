@@ -7,6 +7,7 @@ import com.example.expencetracker.data.ExpenseDataBase
 import com.example.expencetracker.data.dao.ExpenseDao
 import com.example.expencetracker.data.madel.ExpenseEntity
 import com.example.expencetracker.R
+import com.example.expencetracker.Utils
 
 class HomeViewModel(dao: ExpenseDao) : ViewModel() {
     val expenses = dao.getAllExpense()
@@ -20,7 +21,7 @@ class HomeViewModel(dao: ExpenseDao) : ViewModel() {
                 total -= it.amount
             }
         }
-        return "$ ${total}"
+        return "$ ${Utils.formatToDecimalValue(total)}"
     }
 
     fun getTotalExpense(list: List<ExpenseEntity>): String {
@@ -30,7 +31,7 @@ class HomeViewModel(dao: ExpenseDao) : ViewModel() {
                 total += it.amount
             }
         }
-        return "$ ${total}"
+        return "$ ${Utils.formatToDecimalValue(total)}"
     }
 
     fun getTotalIncome(list: List<ExpenseEntity>): String {
@@ -40,7 +41,7 @@ class HomeViewModel(dao: ExpenseDao) : ViewModel() {
                 total += it.amount
             }
         }
-        return "$ ${total}"
+        return "$ ${Utils.formatToDecimalValue(total)}"
     }
 
     fun getItemIcon(item: ExpenseEntity): Int {

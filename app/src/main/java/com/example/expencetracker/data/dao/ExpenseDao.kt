@@ -1,4 +1,5 @@
 package com.example.expencetracker.data.dao
+import com.example.expencetracker.data.madel.ExpenseSummary
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -13,6 +14,11 @@ interface ExpenseDao {
 
     @Query("SELECT * FROM Expense_Table")
     fun getAllExpense(): Flow<List<ExpenseEntity>>
+
+    @Query("SELECT type, date, SUM(amount) AS total_amount FROM expense_table WHERE type=:type GROUP BY type,date ORDER BY date")
+    fun getAllExpenesDate(type: String = "Expense"): Flow<List<ExpenseSummary>>
+
+
 
     @Insert
     suspend fun insertexpense(expenseEntity: ExpenseEntity)

@@ -1,6 +1,7 @@
 package com.example.expencetracker.viewmodel
 
 import android.content.Context
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.expencetracker.data.ExpenseDataBase
